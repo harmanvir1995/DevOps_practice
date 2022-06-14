@@ -1,0 +1,9 @@
+# It creates the container on the jenkins server and then distroys it when not needed.
+
+version: "3"
+services:
+  nodejs:
+    build:
+      context: .
+    image: "compte-heure"
+    command: "npm install"
