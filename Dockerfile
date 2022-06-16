@@ -1,3 +1,4 @@
+# Docker file for the creation of jenkins image which has docker installed in it.
 FROM jenkins/jenkins
 
 USER root
