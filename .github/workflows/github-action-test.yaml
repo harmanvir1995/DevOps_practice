@@ -9,10 +9,17 @@ jobs:
       - name: echo a string
         run: echo "Hello world"
 
-      - name: multiline script
+      - name: List files before using actions/checkout
         run: |
-          node -v
-          npm -v
-          docker images
-          docker ps
+          pwd
+          ls
+
+      - name: Run the actions/checkout
+        uses: actions/checkout@v1
+          
+      - name: List files after using actions/checkout
+        run: |
+          pwd
+          ls
+          
           
