@@ -21,5 +21,13 @@ jobs:
         run: |
           pwd
           ls
+  Check-environment-variables:
+     runs-on: ubuntu-latest
+     steps:
+       - name: testing first variable
+         run: |
+           echo "first variable is the name of the runner OS ${{RUNNER_OS}}"
+           echo "second variable is $GITHUB_REPOSITORY_OWNER" 
+    
           
           
