@@ -1,5 +1,7 @@
 name: Container
-on: push
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   node-docker:
