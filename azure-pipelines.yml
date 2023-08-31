@@ -1,0 +1,36 @@
+# Deploy database changes using schemachange
+# https://github.com/Snowflake-Labs/schemachange
+# (see https://aka.ms/yaml for the YAML schema reference)
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - /promotions
+    exclude:
+    - /rollbacks
+pool:
+  vmImage: 'ubuntu-latest'
+variables:
+- group: prism_sf_testing_pipeline
+- name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:r)
+steps:
+- task: UsePythonVersion@0
+  displayName: 'Use Python 3.8.x'
+  inputs:
+    versionSpec: '3.8.x'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo '$(Build.BuildNumber)'
+      echo 'Starting bash task'
+      echo "PROJECT_FOLDER $(PROJECT_FOLDER)"
+      python --version
+      echo '********************************  Step 1: Installing schemachange  ********************************'
+      pip install schemachange --upgrade
+      echo '********************************  Step 2: Running schemachange  ********************************'
+      schemachange -f $(PROJECT_FOLDER)/promotions -a $(SF_ACCOUNT) -u $(SF_USERNAME) -r $(SF_ROLE) -w $(SF_WAREHOUSE) -d $(SF_DATABASE) -c $(SF_DATABASE).SCHEMACHANGE.CHANGE_HISTORY_REPO_SNOWFLAKE --create-change-history-table
+  env:
+    SNOWFLAKE_PASSWORD: $(SF_PASSWORD)
